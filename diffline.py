@@ -7,12 +7,12 @@ import colorama
 RED = '\033[31m'
 RESET = '\033[0m'
 
+
 class LineDiff:
     def __init__(self):
         self._previous_line = ""
         self._previous_line_len = 0
         self.color = False
-
 
     def _color_set(self, status):
         if self.color != status:
@@ -21,7 +21,6 @@ class LineDiff:
             elif status is True:
                 print(RED, end="")
             self.color = status
-
 
     def _print_with_diff(self, new_line):
         new_line_len = len(new_line)
@@ -37,7 +36,6 @@ class LineDiff:
         self._color_set(False)
         print()
 
-
     def feed_line(self, new_line):
         self._print_with_diff(new_line)
         self._previous_line = new_line
@@ -50,17 +48,15 @@ def main():
     # handle Ctrl+C
     def signal_handler(sig, frame):
         sys.exit(0)
+
     signal.signal(signal.SIGINT, signal_handler)
 
     colorama.init()
     differ = LineDiff()
 
-    buff = ""
-    while True:
-        buff += sys.stdin.read(1)
-        if buff.endswith('\n'):
-            differ.feed_line(buff[:-1])
-            buff = ""
+    for line in sys.stdin:
+        differ.feed_line(line[:-1])
+
 
 if __name__ == "__main__":
     main()

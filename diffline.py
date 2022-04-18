@@ -12,27 +12,28 @@ class LineDiff:
     def __init__(self):
         self._previous_line = ""
         self._previous_line_len = 0
-        self.color = False
+        self.is_color = False
 
-    def _color_set(self, status):
-        if self.color != status:
-            if status is False:
+    def _color_set(self, is_color):
+        if self.is_color != is_color:
+            if is_color is False:
                 print(RESET, end="")
-            elif status is True:
+            elif is_color is True:
                 print(RED, end="")
-            self.color = status
+            self.is_color = is_color
 
     def _print_with_diff(self, new_line):
-        new_line_len = len(new_line)
-
-        for i in range(new_line_len):
+        for i in range(len(new_line)):
             if i < self._previous_line_len:
                 if new_line[i] == self._previous_line[i]:
                     self._color_set(False)
                 else:
                     self._color_set(True)
+            else:
+                self._color_set(True)
 
             print(new_line[i], end="")
+
         self._color_set(False)
         print()
 
